@@ -29,4 +29,3 @@ def post_document(title):
     document.update_attributes(req)
     document.save()
     return make_response(json.dumps(document.to_dict()))
-
