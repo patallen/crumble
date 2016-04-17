@@ -1,18 +1,25 @@
+var babelPresets = {presets: ['react', 'es2015']};
+var path = require('path');
+var webpack = require('webpack');
+
 module.exports = {
+	devtool: 'eval',
 	entry: [
-		"webpack-dev-server/client?http://localhost:8080/public",
+		"webpack-dev-server/client?http://localhost:8080/",
 		"webpack/hot/only-dev-server",
-		"./app/components/Main.js"
+		"./src/index.js"
 	],
 	output: {
-		filename: "public/bundle.js"
+		path: path.join(__dirname, 'dist'),
+		filename: "bundle.js",
+		publicPath: '/static/'
 	},
 	module: {
 		loaders: [
 			{
-				test: /\.jsx?$/,
-				exclude: /(node_modules|bower_components)/,
-				loaders: ['react-hot', 'babel-loader'],
+				test: /\.js$/,
+				include: path.join(__dirname, 'src'),
+				loaders: ['react-hot', 'babel'],
 			}
 		]
 	}
