@@ -5,6 +5,8 @@ from time import time
 class BaseMixin(object):
     created = db.Column(db.BigInteger, default=time)
     updated = db.Column(db.BigInteger, default=time, onupdate=time)
+    default_includes = []
+    default_excludes = []
 
     def save(self):
         try:
@@ -15,8 +17,8 @@ class BaseMixin(object):
             raise
 
     def to_dict(self, exclude=None, include=None):
-        include = include or []
-        exclude = exclude or []
+        include = self.default_includes.extend(include or [])
+        exclude = self.default_excludes.extend(exclude or [])
         if not isinstance(include, list):
             include = [include]
         if not isinstance(exclude, list):
