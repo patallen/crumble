@@ -14,7 +14,7 @@ def get_document(title):
     if document:
         document = document.to_dict()
     else:
-        document = {title: title}
+        document = {"title": title}
     return make_response(json.dumps(document))
 
 

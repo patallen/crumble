@@ -17,8 +17,11 @@ class BaseMixin(object):
             raise
 
     def to_dict(self, exclude=None, include=None):
-        include = self.default_includes.extend(include or [])
-        exclude = self.default_excludes.extend(exclude or [])
+        include = include or []
+        exclude = exclude or []
+        include.extend(self.default_includes)
+        exclude.extend(self.default_excludes)
+
         if not isinstance(include, list):
             include = [include]
         if not isinstance(exclude, list):
@@ -26,9 +29,10 @@ class BaseMixin(object):
 
         cols = [k.key for k in self.__table__.columns if k.key[0] is not '_']
         attrs = [c for c in cols if c not in exclude] + include
-
+        print "ATTRS", attrs
         rv = {}
         for attr in attrs:
+            print "ATTR", attr
             if hasattr(self, attr):
                 rv[attr] = unicode(getattr(self, attr))
         return rv
