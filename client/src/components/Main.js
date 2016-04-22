@@ -1,6 +1,12 @@
 import React from 'react';
+import axios from 'axios';
 import QueryBar from './querybar';
 import BodyInput from './bodyinput';
+
+const ax = axios.create({
+  baseURL: 'http://localhost:5000/',
+  timeout: 1000
+});
 
 export default class Main extends React.Component {
 	constructor() {
@@ -12,10 +18,20 @@ export default class Main extends React.Component {
 		this.onUpdateDocument = this.onUpdateDocument.bind(this);
 	}
 	onUpdateDocument() {
-		console.log("Updating Document with body: " + this.state.body)
+		let title = this.state.title;
+		let body = this.state.body;
+
+		ax.post(`/public/document/${title}`, {body})
+			.then(res => {})
+			.catch(err => {console.log(err.data)})
 	}
-	getDocument() {
-		console.log("Fetching Document with title: " + this.state.title)
+	getDocument(title) {
+		let body;
+		ax.get(`/public/document/${title}`)
+			.then(res => {
+				this.setState({title: res.data.title, body: res.data.body});
+			})
+			.catch(err => {console.log(`Error: ${err.data}`)})
 	}
 	onBodyChange(body){
 		this.setState({body})
@@ -24,7 +40,7 @@ export default class Main extends React.Component {
 		return (
 			<div className="main col-md-offset-3 col-md-6">
 				<div className="row padding-top">
-					<QueryBar />
+					<QueryBar getDocument={this.getDocument}/>
 				</div>
 				<BodyInput
 					doc={this.state}
