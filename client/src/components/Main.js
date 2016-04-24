@@ -29,9 +29,9 @@ export default class Main extends React.Component {
 		let body;
 		ax.get(`/public/document/${title}`)
 			.then(res => {
-				this.setState({title: res.data.title, body: res.data.body});
+				this.setState({title: res.data.title, body: res.data.body || ""});
 			})
-			.catch(err => {console.log(`Error: ${err.data}`)})
+			.catch(err => {console.log(err)})
 	}
 	onBodyChange(body){
 		this.setState({body})
