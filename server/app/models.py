@@ -49,3 +49,11 @@ class Document(BaseMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(256), nullable=False, unique=True)
     body = db.Column(db.Text)
+
+
+class Action(BaseMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    action_type = db.Column(db.String(256), nullable=False)
+    description = db.Column(db.Text)
+    ip_address = db.Column(db.String, nullable=True)
+
