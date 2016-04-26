@@ -8,8 +8,10 @@ app.config.from_object(config)
 
 db = SQLAlchemy(app)
 
-from app.views import public
+from app.views import public, admin
 app.register_blueprint(public, url_prefix='/public')
+app.register_blueprint(admin, url_prefix='/admin')
+
 
 @app.after_request
 def after_request(response):

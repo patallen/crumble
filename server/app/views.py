@@ -2,10 +2,11 @@ import json
 
 from flask import Blueprint, make_response, request
 
-from app.models import Document
+from app.models import Document, Action
 
 
 public = Blueprint('public', __name__)
+admin = Blueprint('admin', __name__)
 
 
 @public.route("/document/<title>", methods=['GET'])
@@ -29,3 +30,10 @@ def post_document(title):
     document.update_attributes(req)
     document.save()
     return make_response(json.dumps(document.to_dict()))
+
+
+@admin.route("/actions", methods=['GET'])
+def get_actions():
+    actions = Action.query.all()
+    actions = [action.to_dict() for action in actions]
+    return make_response(json.dumps(actions))
