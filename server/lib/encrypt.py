@@ -1,9 +1,9 @@
 from Crypto.Cipher import AES
 from Crypto import Random
 from app import app
+import urllib2
 
-iv = 'thisiskdjiejfisn'
-encryptor = AES.new(app.config.get('SECRET_KEY'), AES.MODE_CBC, iv)
+iv = 'this is how we d'
 
 
 def pad(string, block_size=16):
@@ -20,8 +20,10 @@ def unpad(string, block_size=16):
 
 
 def encrypt(string):
-    return encryptor.encrypt(string)
+    encryptor = AES.new(app.config.get('SECRET_KEY'), AES.MODE_CBC, iv)
+    return urllib2.unquote(encryptor.encrypt(pad(string)))
 
 
 def decrypt(string):
-    return encryptor.decrypt(string)
+    encryptor = AES.new(app.config.get('SECRET_KEY'), AES.MODE_CBC, iv)
+    return unpad(encryptor.decrypt(string))
