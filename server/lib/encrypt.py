@@ -2,7 +2,7 @@ from Crypto.Cipher import AES
 from Crypto import Random
 from app import app
 
-iv = Random.new().read(AES.block_size)
+iv = 'thisiskdjiejfisn'
 encryptor = AES.new(app.config.get('SECRET_KEY'), AES.MODE_CBC, iv)
 
 
@@ -14,8 +14,13 @@ def pad(string, block_size=16):
     return "{0}{1}".format(string, ("{}{}".format('0'*zeros, str(to_pad))))
 
 
+def unpad(string, block_size=16):
+    num = int(string[-2:len(string)]) + 16
+    return string[:-num]
+
+
 def encrypt(string):
-    return encryptor.encrypt(pad(string))
+    return encryptor.encrypt(string)
 
 
 def decrypt(string):
