@@ -1,5 +1,4 @@
 from Crypto.Cipher import AES
-from Crypto import Random
 from app import app
 import urllib2
 

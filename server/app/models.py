@@ -1,5 +1,6 @@
 from app import db
 from time import time
+import lib.encrypt
 
 
 class BaseMixin(object):
@@ -47,8 +48,30 @@ class BaseMixin(object):
 
 class Document(BaseMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(256), nullable=False, unique=True)
-    body = db.Column(db.Text)
+    _title = db.Column(
+        db.String(256),
+        nullable=False,
+        unique=True,
+        server_default="Untitled",
+        default="Untitled"
+    )
+    _body = db.Column(db.Text)
+
+    @property
+    def title(self):
+        return lib.encrypt.decrypt(self._title)
+
+    @title.setter
+    def title(self, string):
+        self._title = lib.encrypt.encrypt(string)
+
+    @property
+    def body(self):
+        return lib.encrypt.decrypt(self._body)
+
+    @body.setter
+    def body(self, string):
+        self._body = lib.encrypt.encrypt(string)
 
 
 class Action(BaseMixin, db.Model):
