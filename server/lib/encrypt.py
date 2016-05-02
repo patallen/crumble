@@ -1,6 +1,7 @@
 from Crypto.Cipher import AES
 from app import app
 import urllib2
+import base64
 
 iv = 'this is how we d'
 
@@ -20,9 +21,9 @@ def unpad(string, block_size=16):
 
 def encrypt(string):
     encryptor = AES.new(app.config.get('SECRET_KEY'), AES.MODE_CBC, iv)
-    return urllib2.unquote(encryptor.encrypt(pad(string)))
+    return urllib2.unquote(base64.b64encode(encryptor.encrypt(pad(string))))
 
 
 def decrypt(string):
     encryptor = AES.new(app.config.get('SECRET_KEY'), AES.MODE_CBC, iv)
-    return unpad(encryptor.decrypt(string))
+    return unpad(encryptor.decrypt(base64.b64decode(string)))
