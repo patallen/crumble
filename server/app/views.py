@@ -9,7 +9,7 @@ public = Blueprint('public', __name__)
 admin = Blueprint('admin', __name__)
 
 
-@public.route("/document/<title>", methods=['GET'])
+@public.route("/documents/<title>", methods=['GET'])
 def get_document(title):
     document = Document.query.filter_by(title=title).first()
     if document:
@@ -19,7 +19,7 @@ def get_document(title):
     return make_response(json.dumps(document))
 
 
-@public.route("/document/<title>", methods=['POST'])
+@public.route("/documents/<title>", methods=['POST'])
 def post_document(title):
     req = request.get_json()
     document = Document.query.filter_by(title=title).first()
@@ -37,3 +37,11 @@ def get_actions():
     actions = Action.query.all()
     actions = [action.to_dict() for action in actions]
     return make_response(json.dumps(actions))
+
+
+@admin.route("/documents")
+def get_documents_admin():
+    docs = Document.query.all()
+    json_docs = [d.to_dict() for d in docs]
+    return make_response(json.dumps(json_docs))
+
