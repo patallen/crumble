@@ -39,9 +39,8 @@ def get_actions():
     return make_response(json.dumps(actions))
 
 
-@admin.route("/documents")
+@admin.route("/documents", methods=['GET'])
 def get_documents_admin():
     docs = Document.query.all()
     json_docs = [d.to_dict() for d in docs]
     return make_response(json.dumps(json_docs))
-
