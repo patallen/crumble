@@ -56,6 +56,7 @@ class Document(BaseMixin, db.Model):
         default="Untitled"
     )
     _body = db.Column(db.Text)
+    default_includes = ['title', 'body']
 
     @property
     def title(self):
