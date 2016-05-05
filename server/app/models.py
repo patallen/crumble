@@ -80,4 +80,5 @@ class Action(BaseMixin, db.Model):
     action_type = db.Column(db.String(256), nullable=False)
     description = db.Column(db.Text)
     ip_address = db.Column(db.String, nullable=True)
+    data = db.Column(db.Text, nullable=True)
 
