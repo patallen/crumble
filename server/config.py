@@ -6,3 +6,5 @@ SQLALCHEMY_DATABASE_URI = 'sqlite:////{}/crumble.db'.format(home_dir)
 DEBUG = True
 
 SECRET_KEY = 'change-this-in-p'
+
+AES_IV = 'this is how we d'
