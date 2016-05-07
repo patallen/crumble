@@ -2,6 +2,10 @@ from app import db
 from time import time
 import lib.encrypt
 
+from werkzeug.security import (
+    generate_password_hash, check_password_hash
+)
+
 
 class BaseMixin(object):
     created = db.Column(db.BigInteger, default=time)
@@ -81,4 +85,21 @@ class Action(BaseMixin, db.Model):
     description = db.Column(db.Text)
     ip_address = db.Column(db.String, nullable=True)
     data = db.Column(db.Text, nullable=True)
+
+
+class Admin(BaseMixin, db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    email = db.Column(db.String(80), nullable=False)
+    _password = db.Column(db.Text, nullable=False)
+
+    @property
+    def password(self):
+        return self._password
+
+    @password.setter
+    def password(self, password):
+        self._password = generate_password_hash(password)
+
+    def authenticate(self, password):
+        return check_password_hash(self._password, password)
 
