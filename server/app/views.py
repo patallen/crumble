@@ -3,6 +3,7 @@ import json
 from flask import Blueprint, make_response, request
 
 from app.models import Document, Action
+from app import db
 
 
 public = Blueprint('public', __name__)
@@ -37,6 +38,19 @@ def get_actions():
     actions = Action.query.all()
     actions = [action.to_dict() for action in actions]
     return make_response(json.dumps(actions))
+
+
+@admin.route("/documents/<title>", methods=['DELETE'])
+def delete_document(title):
+    document = Document.query.filter_by(title=title).first()
+    if document is None:
+        return make_response(404)
+    try:
+        db.session.delete(document)
+        db.session.commit()
+        return make_response(200)
+    except:
+        return make_response(500)
 
 
 @admin.route("/documents", methods=['GET'])
