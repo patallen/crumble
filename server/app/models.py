@@ -1,10 +1,12 @@
-from app import db
 from time import time
-import lib.encrypt
 
+from sqlalchemy.orm import validates
 from werkzeug.security import (
     generate_password_hash, check_password_hash
 )
+
+from app import db
+import lib.encrypt
 
 
 class BaseMixin(object):
@@ -101,6 +103,18 @@ class Action(BaseMixin, db.Model):
             data=data
         )
         cls.save()
+
+    @validates('action_type')
+    def validate_action_type(self, action_type):
+        assert action_type in self.action_types
+        return action_type
+
+    @property
+    def action_types(self):
+        return [
+            'create_document',
+            'update_document'
+        ]
 
 
 class Admin(BaseMixin, db.Model):
