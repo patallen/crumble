@@ -19,9 +19,12 @@ def create_admin():
     pass2 = prompt_pass("Re-enter password")
 
     if pass1 == pass2:
-        admin = models.Admin(email=email)
-        admin.password = pass1
-        admin.save()
+        try:
+            admin = models.Admin(email=email)
+            admin.password = pass1
+            admin.save()
+        except:
+            print "Email already exists in database."
     else:
         print "Passwords do not match. Try again."
 
