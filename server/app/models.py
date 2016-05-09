@@ -86,6 +86,22 @@ class Action(BaseMixin, db.Model):
     ip_address = db.Column(db.String, nullable=True)
     data = db.Column(db.Text, nullable=True)
 
+    @classmethod
+    def create(
+        cls,
+        action_type,
+        ip_address,
+        description=None,
+        data=None
+    ):
+        cls(
+            action_type=action_type,
+            ip_address=ip_address,
+            description=description,
+            data=data
+        )
+        cls.save()
+
 
 class Admin(BaseMixin, db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -102,4 +118,3 @@ class Admin(BaseMixin, db.Model):
 
     def authenticate(self, password):
         return check_password_hash(self._password, password)
-
